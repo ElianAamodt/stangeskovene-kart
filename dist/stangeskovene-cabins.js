@@ -1,7 +1,7 @@
 (function (window, document) {
   "use strict";
 
-  var VERSION = "1.1.1";
+  var VERSION = "1.1.2";
   var state = { need: "alle", guests: 0, query: "", selected: null, compare: [] };
 
   function field(node, name) {
@@ -70,7 +70,7 @@
     controls.className = "cabin-fit";
     controls.innerHTML = '<div class="cabin-fit-head"><div><span>Finn riktig hytte</span><strong data-cabin-count></strong></div><button type="button" data-cabin-clear hidden>Nullstill filtre</button></div>' +
       '<div class="cabin-fit-row"><label class="cabin-select">Antall personer<select data-cabin-guests><option value="0">Alle størrelser</option><option value="2">1–2 personer</option><option value="4">3–4 personer</option><option value="6">5–6 personer</option><option value="7">7 eller flere</option></select></label>' +
-      '<fieldset class="cabin-needs"><legend>Behov</legend><div><button type="button" class="is-on" data-cabin-need="alle" aria-pressed="true">Alle</button><button type="button" data-cabin-need="strom" aria-pressed="false">Strøm</button><button type="button" data-cabin-need="vann" aria-pressed="false">Nær vann</button><button type="button" data-cabin-need="enkel" aria-pressed="false">Enkel standard</button></div></fieldset></div>';
+      '<div class="cabin-needs"><span class="cabin-control-label" id="cabinNeedsLabel">Behov</span><div role="group" aria-labelledby="cabinNeedsLabel"><button type="button" class="is-on" data-cabin-need="alle" aria-pressed="true">Alle</button><button type="button" data-cabin-need="strom" aria-pressed="false">Strøm</button><button type="button" data-cabin-need="vann" aria-pressed="false">Nær vann</button><button type="button" data-cabin-need="enkel" aria-pressed="false">Enkel standard</button></div></div></div>';
     list.parentNode.insertBefore(controls, list);
 
     var compare = document.createElement("div");

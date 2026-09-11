@@ -62,23 +62,31 @@
   display: grid;
   grid-template-columns: minmax(148px, .62fr) minmax(0, 1.38fr);
   gap: 16px;
-  align-items: end;
+  align-items: start;
   margin-top: 20px;
 }
 
 .cabin-select,
-.cabin-needs legend {
+.cabin-control-label {
   color: var(--muted, #7d8a80);
   font-size: 11px;
   font-weight: 600;
   line-height: 1.4;
 }
 
+.cabin-select,
+.cabin-needs {
+  display: grid;
+  grid-template-rows: 22px 48px;
+  align-items: stretch;
+}
+
 .cabin-select select {
   display: block;
   width: 100%;
+  height: 48px;
   min-height: 48px;
-  margin-top: 8px;
+  margin: 0;
   border: 1px solid var(--line, #e2e2dc);
   border-radius: 0;
   background: var(--paper, #fff);
@@ -102,7 +110,6 @@
 .cabin-needs {
   min-width: 0;
   margin: 0;
-  border: 0;
   padding: 0;
 }
 
@@ -110,10 +117,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
+  height: 48px;
+  margin: 0;
 }
 
 .cabin-needs button {
+  height: 48px;
   min-height: 48px;
   border: 1px solid var(--line, #e2e2dc);
   border-radius: 0;
