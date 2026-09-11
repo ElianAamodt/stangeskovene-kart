@@ -1,7 +1,7 @@
 (function (window, document) {
   "use strict";
 
-  var VERSION = "1.0.0";
+  var VERSION = "1.1.0";
   var state = { need: "alle", guests: 0, query: "", selected: null, compare: [] };
 
   function field(node, name) {
@@ -68,9 +68,9 @@
 
     var controls = document.createElement("div");
     controls.className = "cabin-fit";
-    controls.innerHTML = '<div class="cabin-fit-head"><div><span>Hva passer turen?</span><strong data-cabin-count></strong></div><button type="button" data-cabin-clear>Nullstill</button></div>' +
-      '<div class="cabin-fit-row"><label>Antall personer<select data-cabin-guests><option value="0">Alle størrelser</option><option value="2">1–2 personer</option><option value="4">3–4 personer</option><option value="6">5–6 personer</option><option value="7">7 eller flere</option></select></label>' +
-      '<div class="cabin-needs" role="group" aria-label="Velg behov"><button type="button" class="is-on" data-cabin-need="alle" aria-pressed="true">Alle</button><button type="button" data-cabin-need="strom" aria-pressed="false">Strøm</button><button type="button" data-cabin-need="vann" aria-pressed="false">Nær vann</button><button type="button" data-cabin-need="enkel" aria-pressed="false">Enkel standard</button></div></div>';
+    controls.innerHTML = '<div class="cabin-fit-head"><div><span>Finn riktig hytte</span><strong data-cabin-count></strong></div><button type="button" data-cabin-clear hidden>Nullstill filtre</button></div>' +
+      '<div class="cabin-fit-row"><label class="cabin-select">Antall personer<select data-cabin-guests><option value="0">Alle størrelser</option><option value="2">1–2 personer</option><option value="4">3–4 personer</option><option value="6">5–6 personer</option><option value="7">7 eller flere</option></select></label>' +
+      '<fieldset class="cabin-needs"><legend>Behov</legend><div><button type="button" class="is-on" data-cabin-need="alle" aria-pressed="true">Alle</button><button type="button" data-cabin-need="strom" aria-pressed="false">Strøm</button><button type="button" data-cabin-need="vann" aria-pressed="false">Nær vann</button><button type="button" data-cabin-need="enkel" aria-pressed="false">Enkel standard</button></div></fieldset></div>';
     list.parentNode.insertBefore(controls, list);
 
     var compare = document.createElement("div");
@@ -79,10 +79,11 @@
     list.parentNode.insertBefore(compare, list.nextSibling);
 
     stage.innerHTML = '<div class="cabin-leaflet" data-cabin-map aria-label="Kart over utleiehyttene"></div>' +
-      '<form class="map-search cabin-search" role="search"><span aria-hidden="true">⌕</span><label class="visually-hidden" for="cabinCmsSearch">Søk</label><input id="cabinCmsSearch" type="search" placeholder="Finn en hytte eller et sted" autocomplete="off"></form>' +
+      '<form class="map-search cabin-search" role="search"><span class="cabin-search-icon" aria-hidden="true"></span><label class="visually-hidden" for="cabinCmsSearch">Søk</label><input id="cabinCmsSearch" type="search" placeholder="Søk etter hytte eller sted" autocomplete="off"></form>' +
       '<p class="map-caption"><strong>Omtrentlige plasseringer.</strong> Nøyaktig adkomst sendes ved bekreftet bestilling.</p>';
 
-    var map = window.L.map(stage.querySelector("[data-cabin-map]"), { zoomControl: true, scrollWheelZoom: false, attributionControl: true }).setView([60.08, 11.8], 10);
+    var map = window.L.map(stage.querySelector("[data-cabin-map]"), { zoomControl: false, scrollWheelZoom: false, attributionControl: true }).setView([60.08, 11.8], 10);
+    window.L.control.zoom({ position: "topright", zoomInTitle: "Zoom inn", zoomOutTitle: "Zoom ut" }).addTo(map);
     window.L.tileLayer("https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png", { minZoom: 4, maxZoom: 18, attribution: 'Kartgrunnlag © <a href="https://www.kartverket.no/" target="_blank" rel="noreferrer">Kartverket</a>' }).addTo(map);
     var layer = window.L.layerGroup().addTo(map);
     var markers = new Map();
@@ -125,16 +126,19 @@
     function render(fit) {
       var shown = visible();
       var count = controls.querySelector("[data-cabin-count]");
+      var clearButton = controls.querySelector("[data-cabin-clear]");
       count.textContent = shown.length + (shown.length === 1 ? " hytte passer" : " hytter passer");
+      clearButton.hidden = state.need === "alle" && !state.guests && !state.query;
       list.innerHTML = shown.length ? shown.map(function (item) {
         var checked = state.compare.indexOf(item.id) !== -1;
-        return '<div class="cabin-choice-row"><button class="cabin-choice' + (state.selected === item.id ? " is-on" : "") + '" type="button" data-cabin="' + escapeHtml(item.id) + '" aria-pressed="' + (state.selected === item.id ? "true" : "false") + '"><span class="choice-name"><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml([item.capacity ? item.capacity + " personer" : "", item.availability].filter(Boolean).join(" · ")) + '</span></span><span class="choice-price">' + escapeHtml(item.price || "Pris på forespørsel") + '</span></button><label class="cabin-compare-check"><input type="checkbox" data-compare="' + escapeHtml(item.id) + '"' + (checked ? " checked" : "") + '><span>Sammenlign</span></label></div>';
+        var disabled = state.compare.length >= 2 && !checked;
+        return '<div class="cabin-choice-row"><button class="cabin-choice' + (state.selected === item.id ? " is-on" : "") + '" type="button" data-cabin="' + escapeHtml(item.id) + '" aria-pressed="' + (state.selected === item.id ? "true" : "false") + '"><span class="choice-name"><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml([item.capacity ? item.capacity + " personer" : "", item.availability].filter(Boolean).join(" · ")) + '</span></span><span class="choice-price">' + escapeHtml(item.price || "Pris på forespørsel") + '</span></button><label class="cabin-compare-check' + (checked ? " is-on" : "") + (disabled ? " is-disabled" : "") + '"><input type="checkbox" data-compare="' + escapeHtml(item.id) + '"' + (checked ? " checked" : "") + (disabled ? " disabled" : "") + '><span>' + (checked ? "Valgt" : "Sammenlign") + '</span></label></div>';
       }).join("") : '<div class="cabin-no-match"><strong>Ingen hytter passer alle valgene.</strong><button type="button" data-cabin-clear>Vis alle hytter</button></div>';
       list.querySelectorAll(".cabin-choice").forEach(function (button) { button.addEventListener("click", function () { var item = items.find(function (candidate) { return candidate.id === button.dataset.cabin; }); if (item) focus(item, true); }); });
       list.querySelectorAll("[data-compare]").forEach(function (input) { input.addEventListener("change", function () {
         if (input.checked && state.compare.length >= 2) { input.checked = false; return; }
         state.compare = input.checked ? state.compare.concat(input.dataset.compare) : state.compare.filter(function (id) { return id !== input.dataset.compare; });
-        compareMarkup();
+        render(false);
       }); });
       list.querySelectorAll("[data-cabin-clear]").forEach(function (button) { button.addEventListener("click", clear); });
       markers.forEach(function (marker, id) { var show = shown.some(function (item) { return item.id === id; }); if (show && !layer.hasLayer(marker)) marker.addTo(layer); if (!show && layer.hasLayer(marker)) layer.removeLayer(marker); });
