@@ -341,24 +341,13 @@
 }
 
 .cabin-search-icon {
-  position: relative;
-  width: 15px;
-  height: 15px;
-  flex: 0 0 15px;
-  border: 2px solid var(--forest, #005c48);
-  border-radius: 50%;
-}
-
-.cabin-search-icon::after {
-  position: absolute;
-  right: -5px;
-  bottom: -3px;
-  width: 6px;
-  height: 2px;
-  background: var(--forest, #005c48);
-  content: "";
-  transform: rotate(-45deg);
-  transform-origin: left center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  fill: none;
+  stroke: var(--forest, #005c48);
+  stroke-linecap: square;
+  stroke-width: 1.8;
 }
 
 .cabin-search input {

@@ -1,7 +1,7 @@
 (function (window, document) {
   "use strict";
 
-  var VERSION = "1.1.0";
+  var VERSION = "1.1.1";
   var state = { need: "alle", guests: 0, query: "", selected: null, compare: [] };
 
   function field(node, name) {
@@ -79,7 +79,7 @@
     list.parentNode.insertBefore(compare, list.nextSibling);
 
     stage.innerHTML = '<div class="cabin-leaflet" data-cabin-map aria-label="Kart over utleiehyttene"></div>' +
-      '<form class="map-search cabin-search" role="search"><span class="cabin-search-icon" aria-hidden="true"></span><label class="visually-hidden" for="cabinCmsSearch">Søk</label><input id="cabinCmsSearch" type="search" placeholder="Søk etter hytte eller sted" autocomplete="off"></form>' +
+      '<form class="map-search cabin-search" role="search"><svg class="cabin-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg><label class="visually-hidden" for="cabinCmsSearch">Søk</label><input id="cabinCmsSearch" type="search" placeholder="Søk etter hytte eller sted" autocomplete="off"></form>' +
       '<p class="map-caption"><strong>Omtrentlige plasseringer.</strong> Nøyaktig adkomst sendes ved bekreftet bestilling.</p>';
 
     var map = window.L.map(stage.querySelector("[data-cabin-map]"), { zoomControl: false, scrollWheelZoom: false, attributionControl: true }).setView([60.08, 11.8], 10);
