@@ -10,7 +10,9 @@
     return field ? field.textContent.replace(/\s+/g, " ").trim() : "";
   }
   function numberField(node, key) {
-    var value = Number(String(textField(node, key)).replace(",", "."));
+    var raw = textField(node, key);
+    if (!raw) return null;
+    var value = Number(String(raw).replace(",", "."));
     return Number.isFinite(value) ? value : null;
   }
   function normalize(value) {
