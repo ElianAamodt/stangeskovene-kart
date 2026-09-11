@@ -63,6 +63,7 @@
     var title = root.querySelector("[data-map-title]");
     var description = root.querySelector("[data-map-text]");
     var action = root.querySelector("[data-map-cta]");
+    var detail = root.querySelector(".place-detail");
     if (!copy || !list || !stage) return;
 
     var controls = document.createElement("div");
@@ -137,6 +138,8 @@
       }); });
       list.querySelectorAll("[data-cabin-clear]").forEach(function (button) { button.addEventListener("click", clear); });
       markers.forEach(function (marker, id) { var show = shown.some(function (item) { return item.id === id; }); if (show && !layer.hasLayer(marker)) marker.addTo(layer); if (!show && layer.hasLayer(marker)) layer.removeLayer(marker); });
+      if (detail) detail.hidden = shown.length === 0;
+      if (shown.length && !shown.some(function (item) { return item.id === state.selected; })) focus(shown[0], false);
       compareMarkup();
       if (fit) {
         var located = shown.filter(function (item) { return item.lat !== null && item.lng !== null; });
