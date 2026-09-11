@@ -1,7 +1,7 @@
 (function (window, document) {
   "use strict";
 
-  var VERSION = "1.0.0";
+  var VERSION = "1.0.1";
   var months = ["Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
   var monthNames = ["januar", "februar", "mars", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "desember"];
   var periods = [
@@ -48,12 +48,13 @@
     section.setAttribute("aria-labelledby", "huntSeasonTitle");
     section.innerHTML = '<div class="hunt-season__intro"><div><p class="hunt-season__eyebrow">Sesongoversikt</p><h2 id="huntSeasonTitle">Når skjer hva?</h2></div><p class="hunt-season__intro-text">Velg måned for å se de oppgitte periodene. Tilgjengelighet, artsvise jakttider og vilkår finner du på hver tilbudsside.</p></div>' +
       '<div class="hunt-season__months" role="group" aria-label="Velg måned"><button type="button" data-season-month="all">Hele året</button>' + months.map(function (name, index) { var month = index + 1; return '<button type="button" data-season-month="' + month + '"' + (month === currentMonth ? ' class="is-current"' : "") + '>' + name + '</button>'; }).join("") + '</div>' +
-      '<p class="hunt-season__result" aria-live="polite"></p><ul class="hunt-season__list">' + periods.map(function (period) { return '<li class="hunt-season__item" data-season-start="' + period.start[0] + '" data-season-end="' + period.end[0] + '"><div class="hunt-season__date"><strong>' + escapeHtml(period.range) + '</strong><span>Oppgitt periode</span></div><div class="hunt-season__copy"><strong>' + escapeHtml(period.name) + '</strong><span>' + escapeHtml(period.text) + '</span><a href="' + escapeHtml(period.url) + '">Les mer <span aria-hidden="true">→</span></a></div><span class="hunt-season__status">' + escapeHtml(statusFor(period, now)) + '</span></li>'; }).join("") + '</ul><p class="hunt-season__note">Periodene er en oversikt. Kontroller alltid gjeldende jakttider, tilgjengelighet og vilkår før jakt.</p>';
+      '<p class="hunt-season__result" aria-live="polite"></p><ul class="hunt-season__list">' + periods.map(function (period) { return '<li class="hunt-season__item" data-season-start="' + period.start[0] + '" data-season-end="' + period.end[0] + '"><div class="hunt-season__date"><strong>' + escapeHtml(period.range) + '</strong><span>Oppgitt periode</span></div><div class="hunt-season__copy"><strong>' + escapeHtml(period.name) + '</strong><span>' + escapeHtml(period.text) + '</span><a href="' + escapeHtml(period.url) + '">Les mer <span aria-hidden="true">→</span></a></div><span class="hunt-season__status">' + escapeHtml(statusFor(period, now)) + '</span></li>'; }).join("") + '<li class="hunt-season__empty" hidden>Ingen dokumenterte perioder denne måneden. Velg «Hele året» for full oversikt.</li></ul><p class="hunt-season__note">Periodene er en oversikt. Kontroller alltid gjeldende jakttider, tilgjengelighet og vilkår før jakt.</p>';
     cards.parentNode.insertBefore(section, cards);
 
     var buttons = section.querySelectorAll("[data-season-month]");
     var items = section.querySelectorAll(".hunt-season__item");
     var result = section.querySelector(".hunt-season__result");
+    var empty = section.querySelector(".hunt-season__empty");
 
     function selectMonth(value) {
       var month = value === "all" ? "all" : Number(value);
@@ -68,6 +69,7 @@
         item.hidden = !show;
         if (show) count += 1;
       });
+      empty.hidden = count !== 0;
       result.textContent = month === "all" ? periods.length + " dokumenterte perioder" : count + (count === 1 ? " periode i " : " perioder i ") + monthNames[month - 1];
     }
 
