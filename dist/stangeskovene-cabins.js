@@ -35,6 +35,13 @@
         vann: /sjo|strand|vann|bat|fiske/.test(haystack),
         enkel: /enkel|utedo|ikke innlagt|vedovn|gassovn/.test(haystack)
       };
+      var verifiedFeatures = {
+        buhol: { strom: true, vann: true, enkel: false },
+        buneskoia: { strom: true, vann: true, enkel: true },
+        sandvika: { strom: false, vann: true, enkel: true },
+        tyribua: { strom: false, vann: false, enkel: true }
+      };
+      if (verifiedFeatures[item.slug]) item.features = verifiedFeatures[item.slug];
       item.search = haystack;
       item.id = item.slug || clean(item.name).replace(/\s+/g, "-");
       item.url = "/" + item.slug;
