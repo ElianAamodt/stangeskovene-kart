@@ -433,6 +433,10 @@
 }
 
 @media screen and (max-width: 1050px) {
+  .estate[data-cms-cabins-ready="true"] .estate-grid {
+    min-height: 0;
+  }
+
   .estate[data-cms-cabins-ready="true"] .estate-panel {
     overflow: visible;
   }

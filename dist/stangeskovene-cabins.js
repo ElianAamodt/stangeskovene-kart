@@ -1,7 +1,7 @@
 (function (window, document) {
   "use strict";
 
-  var VERSION = "1.1.3";
+  var VERSION = "1.1.4";
   var state = { need: "alle", guests: 0, query: "", selected: null, compare: [] };
 
   function field(node, name) {
@@ -171,7 +171,7 @@
     var search = stage.querySelector("#cabinCmsSearch");
     search.closest("form").addEventListener("submit", function (event) { event.preventDefault(); });
     search.addEventListener("input", function () { state.query = clean(search.value.trim()); render(true); });
-    root.querySelectorAll("[data-map-view]").forEach(function (button) { button.addEventListener("click", function () { var view = button.dataset.mapView; root.dataset.mapView = view; root.querySelectorAll("[data-map-view]").forEach(function (candidate) { var on = candidate === button; candidate.setAttribute("aria-pressed", on ? "true" : "false"); }); if (view === "map") window.setTimeout(function () { map.invalidateSize(); }, 50); }); });
+    root.querySelectorAll("button[data-map-view]").forEach(function (button) { button.addEventListener("click", function () { var view = button.dataset.mapView; root.dataset.mapView = view; root.querySelectorAll("button[data-map-view]").forEach(function (candidate) { var on = candidate === button; candidate.setAttribute("aria-pressed", on ? "true" : "false"); }); if (view === "map") window.setTimeout(function () { map.invalidateSize(); }, 50); }); });
 
     state.selected = items[0].id;
     render(true);
