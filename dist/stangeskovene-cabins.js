@@ -1,8 +1,8 @@
 (function (window, document) {
   "use strict";
 
-  var VERSION = "1.1.4";
-  var state = { need: "alle", guests: 0, query: "", selected: null, compare: [] };
+  var VERSION = "1.1.5";
+  var state = { need: "alle", guests: 0, query: "", selected: null };
 
   function field(node, name) {
     var target = node.querySelector('[data-cabin-field="' + name + '"]');
@@ -73,11 +73,6 @@
       '<div class="cabin-needs"><span class="cabin-control-label" id="cabinNeedsLabel">Behov</span><div role="group" aria-labelledby="cabinNeedsLabel"><button type="button" class="is-on" data-cabin-need="alle" aria-pressed="true">Alle</button><button type="button" data-cabin-need="strom" aria-pressed="false">Strøm</button><button type="button" data-cabin-need="vann" aria-pressed="false">Nær vann</button><button type="button" data-cabin-need="enkel" aria-pressed="false">Enkel standard</button></div></div></div>';
     list.parentNode.insertBefore(controls, list);
 
-    var compare = document.createElement("div");
-    compare.className = "cabin-compare";
-    compare.hidden = true;
-    list.parentNode.insertBefore(compare, list.nextSibling);
-
     stage.innerHTML = '<div class="cabin-leaflet" data-cabin-map aria-label="Kart over utleiehyttene"></div>' +
       '<form class="map-search cabin-search" role="search"><svg class="cabin-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg><label class="visually-hidden" for="cabinCmsSearch">Søk</label><input id="cabinCmsSearch" type="search" placeholder="Søk etter hytte eller sted" autocomplete="off"></form>' +
       '<p class="map-caption"><strong>Omtrentlige plasseringer.</strong> Nøyaktig adkomst sendes ved bekreftet bestilling.</p>';
@@ -112,17 +107,6 @@
       if (action) { action.href = item.url; action.innerHTML = "Se hytte og priser <span>→</span>"; }
       if (move && item.lat !== null && item.lng !== null) map.flyTo([item.lat, item.lng], 13, { duration: 0.45 });
     }
-    function compareMarkup() {
-      var chosen = state.compare.map(function (id) { return items.find(function (item) { return item.id === id; }); }).filter(Boolean);
-      compare.hidden = chosen.length === 0;
-      if (!chosen.length) return;
-      compare.innerHTML = '<div class="cabin-compare-head"><span>Sammenlign hytter</span><strong>' + chosen.length + ' av 2 valgt</strong></div><div class="cabin-compare-grid">' + chosen.map(function (item) {
-        return '<article><button type="button" data-remove-compare="' + escapeHtml(item.id) + '" aria-label="Fjern ' + escapeHtml(item.name) + '">×</button><strong>' + escapeHtml(item.name) + '</strong><dl><div><dt>Plass</dt><dd>' + escapeHtml(item.capacity ? item.capacity + " personer" : "Ikke oppgitt") + '</dd></div><div><dt>Pris</dt><dd>' + escapeHtml(item.price || "Pris på forespørsel") + '</dd></div><div><dt>Strøm</dt><dd>' + (item.features.strom ? "Ja" : "Nei / ikke oppgitt") + '</dd></div></dl><a href="' + escapeHtml(item.url) + '">Se hytta →</a></article>';
-      }).join("") + "</div>";
-      compare.querySelectorAll("[data-remove-compare]").forEach(function (button) {
-        button.addEventListener("click", function () { state.compare = state.compare.filter(function (id) { return id !== button.dataset.removeCompare; }); render(false); });
-      });
-    }
     function render(fit) {
       var shown = visible();
       var count = controls.querySelector("[data-cabin-count]");
@@ -130,21 +114,13 @@
       count.textContent = shown.length + (shown.length === 1 ? " hytte passer" : " hytter passer");
       clearButton.hidden = state.need === "alle" && !state.guests && !state.query;
       list.innerHTML = shown.length ? shown.map(function (item) {
-        var checked = state.compare.indexOf(item.id) !== -1;
-        var disabled = state.compare.length >= 2 && !checked;
-        return '<div class="cabin-choice-row"><button class="cabin-choice' + (state.selected === item.id ? " is-on" : "") + '" type="button" data-cabin="' + escapeHtml(item.id) + '" aria-pressed="' + (state.selected === item.id ? "true" : "false") + '"><span class="choice-name"><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml([item.capacity ? item.capacity + " personer" : "", item.availability].filter(Boolean).join(" · ")) + '</span></span><span class="choice-price">' + escapeHtml(item.price || "Pris på forespørsel") + '</span></button><label class="cabin-compare-check' + (checked ? " is-on" : "") + (disabled ? " is-disabled" : "") + '"><input type="checkbox" data-compare="' + escapeHtml(item.id) + '"' + (checked ? " checked" : "") + (disabled ? " disabled" : "") + '><span>' + (checked ? "Valgt" : "Sammenlign") + '</span></label></div>';
+        return '<button class="cabin-choice' + (state.selected === item.id ? " is-on" : "") + '" type="button" data-cabin="' + escapeHtml(item.id) + '" aria-pressed="' + (state.selected === item.id ? "true" : "false") + '"><span class="choice-name"><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml([item.capacity ? item.capacity + " personer" : "", item.availability].filter(Boolean).join(" · ")) + '</span></span><span class="choice-price">' + escapeHtml(item.price || "Pris på forespørsel") + '</span></button>';
       }).join("") : '<div class="cabin-no-match"><strong>Ingen hytter passer alle valgene.</strong><button type="button" data-cabin-clear>Vis alle hytter</button></div>';
       list.querySelectorAll(".cabin-choice").forEach(function (button) { button.addEventListener("click", function () { var item = items.find(function (candidate) { return candidate.id === button.dataset.cabin; }); if (item) focus(item, true); }); });
-      list.querySelectorAll("[data-compare]").forEach(function (input) { input.addEventListener("change", function () {
-        if (input.checked && state.compare.length >= 2) { input.checked = false; return; }
-        state.compare = input.checked ? state.compare.concat(input.dataset.compare) : state.compare.filter(function (id) { return id !== input.dataset.compare; });
-        render(false);
-      }); });
       list.querySelectorAll("[data-cabin-clear]").forEach(function (button) { button.addEventListener("click", clear); });
       markers.forEach(function (marker, id) { var show = shown.some(function (item) { return item.id === id; }); if (show && !layer.hasLayer(marker)) marker.addTo(layer); if (!show && layer.hasLayer(marker)) layer.removeLayer(marker); });
       if (detail) detail.hidden = shown.length === 0;
       if (shown.length && !shown.some(function (item) { return item.id === state.selected; })) focus(shown[0], false);
-      compareMarkup();
       if (fit) {
         var located = shown.filter(function (item) { return item.lat !== null && item.lng !== null; });
         if (located.length === 1) map.flyTo([located[0].lat, located[0].lng], 13, { duration: 0.45 });
