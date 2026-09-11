@@ -1,7 +1,7 @@
 (function (window, document) {
   "use strict";
 
-  var VERSION = "1.1.2";
+  var VERSION = "1.1.3";
   var state = { need: "alle", guests: 0, query: "", selected: null, compare: [] };
 
   function field(node, name) {
@@ -44,7 +44,7 @@
       if (verifiedFeatures[item.slug]) item.features = verifiedFeatures[item.slug];
       item.search = haystack;
       item.id = item.slug || clean(item.name).replace(/\s+/g, "-");
-      item.url = "/" + item.slug;
+      item.url = "/hytter/" + item.slug;
       return item;
     }).filter(function (item) { return item.name; });
   }
