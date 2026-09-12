@@ -12,7 +12,7 @@
   padding: 40px;
 }
 
-.hunt-season__eyebrow {
+.hunt-season p.hunt-season__eyebrow {
   margin: 0;
   color: var(--moss, #d7e08d);
   font-size: 13px;
@@ -31,7 +31,7 @@
   line-height: 1;
 }
 
-.hunt-season__intro-text {
+.hunt-season p.hunt-season__intro-text {
   max-width: 480px;
   margin: 0;
   color: rgba(255, 255, 255, .9);
@@ -212,7 +212,7 @@
   text-transform: uppercase;
 }
 
-.hunt-season__result {
+.hunt-season p.hunt-season__result {
   min-height: 22px;
   margin: 0;
   color: #fff;
@@ -327,7 +327,7 @@
   font-size: 14px;
 }
 
-.hunt-season__note {
+.hunt-season p.hunt-season__note {
   margin: 0;
   border-top: 1px solid rgba(255, 255, 255, .18);
   padding: 18px 40px 22px;
