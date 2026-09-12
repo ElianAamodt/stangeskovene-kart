@@ -187,7 +187,7 @@
   text-underline-offset: 4px;
 }
 
-.hunt-season__empty {
+.hunt-season li.hunt-season__empty {
   border-top: 1px solid rgba(255, 255, 255, .24);
   padding: 28px 0 12px;
   color: #fff;
