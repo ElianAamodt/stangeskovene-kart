@@ -39,7 +39,7 @@
     return months.map(function (name, index) {
       var month = index + 1;
       var active = month >= period.start[0] && month <= period.end[0];
-      var classes = "hunt-season__calendar-cell" + (active ? " has-period is-" + period.tone : "");
+      var classes = "hunt-season__calendar-cell" + (active ? " has-period is-" + period.tone + (month === period.start[0] ? " is-start" : "") + (month === period.end[0] ? " is-end" : "") : "");
       var label = active ? period.name + " – " + name : "Ingen oppgitt periode for " + period.name + " i " + name;
       return '<span class="' + classes + '" data-calendar-month="' + month + '" aria-label="' + escapeHtml(label) + '">' + (active ? '<i aria-hidden="true"></i>' : '') + '</span>';
     }).join("");
