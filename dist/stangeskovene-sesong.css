@@ -64,6 +64,12 @@
   background: #fff;
 }
 
+.hunt-season__calendar-head:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 4;
+}
+
 .hunt-season__calendar-head button {
   width: 100%;
   min-height: 56px;
@@ -103,7 +109,9 @@
 }
 
 .hunt-season__calendar-label {
-  position: relative;
+  position: sticky;
+  left: 0;
+  z-index: 3;
   display: grid;
   grid-template-columns: 10px 1fr;
   column-gap: 12px;
