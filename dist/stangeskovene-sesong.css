@@ -39,219 +39,91 @@
   line-height: 1.65;
 }
 
-.hunt-season__calendar {
+.hunt-season__months {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(12, 1fr);
   overflow-x: auto;
   border-top: 1px solid rgba(255, 255, 255, .22);
   border-bottom: 1px solid rgba(255, 255, 255, .22);
-  background: #f5f7ef;
   scrollbar-width: thin;
 }
 
-.hunt-season__calendar:focus-visible {
-  outline: 3px solid #d7e08d;
-  outline-offset: -3px;
-}
-
-.hunt-season__calendar-grid {
-  display: grid;
-  grid-template-columns: 220px repeat(12, minmax(72px, 1fr));
-  min-width: 1150px;
-}
-
-.hunt-season__calendar-head {
-  border-right: 1px solid #e2e2dc;
-  border-bottom: 1px solid #e2e2dc;
-  background: #fff;
-}
-
-.hunt-season__calendar-head:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 4;
-}
-
-.hunt-season__calendar-head button {
-  width: 100%;
-  min-height: 56px;
+.hunt-season__months button {
+  min-width: 64px;
+  min-height: 52px;
   border: 0;
+  border-right: 1px solid rgba(255, 255, 255, .16);
   background: transparent;
-  padding: 0 12px;
-  color: #44504a;
-  font: 600 13px/1.2 inherit;
+  padding: 0 10px;
+  color: rgba(255, 255, 255, .8);
+  font: 600 12px/1.2 inherit;
   cursor: pointer;
 }
 
-.hunt-season__calendar-head:first-child button {
-  color: #005c48;
-  text-align: left;
+.hunt-season__months button:first-child {
+  min-width: 104px;
 }
 
-.hunt-season__calendar-head button:hover,
-.hunt-season__calendar-head button:focus-visible {
-  background: #e9eee5;
-  color: #063528;
+.hunt-season__months button:hover,
+.hunt-season__months button:focus-visible {
+  background: rgba(255, 255, 255, .09);
+  color: #fff;
 }
 
-.hunt-season__calendar-head button:focus-visible {
-  outline: 2px solid #005c48;
+.hunt-season__months button:focus-visible {
+  outline: 2px solid var(--moss, #d7e08d);
   outline-offset: -3px;
 }
 
-.hunt-season__calendar-head button.is-current {
-  box-shadow: inset 0 -3px 0 #9fb8a5;
-  color: #063528;
+.hunt-season__months button.is-current {
+  box-shadow: inset 0 -3px 0 rgba(215, 224, 141, .55);
+  color: #fff;
 }
 
-.hunt-season__calendar-head button.is-active {
-  background: #d7e08d;
+.hunt-season__months button.is-active {
+  background: var(--moss, #d7e08d);
   box-shadow: none;
-  color: #063528;
-}
-
-.hunt-season__calendar-label {
-  position: sticky;
-  left: 0;
-  z-index: 3;
-  display: grid;
-  grid-template-columns: 10px 1fr;
-  column-gap: 12px;
-  align-content: center;
-  min-height: 72px;
-  border-right: 1px solid #e2e2dc;
-  border-bottom: 1px solid #e2e2dc;
-  background: #fff;
-  padding: 12px 18px;
-  color: #063528;
-  text-decoration: none;
-}
-
-.hunt-season__calendar-label:hover strong,
-.hunt-season__calendar-label:focus-visible strong {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.hunt-season__calendar-label:focus-visible {
-  outline: 2px solid #005c48;
-  outline-offset: -3px;
-}
-
-.hunt-season__calendar-label strong {
-  grid-column: 2;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.hunt-season__calendar-label small {
-  grid-column: 2;
-  margin-top: 4px;
-  color: #617069;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.hunt-season__swatch {
-  grid-row: 1 / 3;
-  align-self: stretch;
-  width: 3px;
-  min-height: 32px;
-}
-
-.hunt-season__calendar-cell {
-  position: relative;
-  min-height: 72px;
-  border-bottom: 1px solid #e2e2dc;
-  background: #f5f7ef;
-}
-
-.hunt-season__calendar-cell.has-period {
-  padding: 27px 0;
-}
-
-.hunt-season__calendar-cell.has-period i {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 18px;
-  border: 1px solid transparent;
-}
-
-.hunt-season__calendar-cell.is-start {
-  padding-left: 12px;
-}
-
-.hunt-season__calendar-cell.is-end {
-  padding-right: 12px;
-}
-
-.hunt-season__calendar-cell.is-lime i,
-.hunt-season__swatch.is-lime {
-  background: #d7e08d;
-}
-
-.hunt-season__calendar-cell.is-light i,
-.hunt-season__swatch.is-light {
-  border-color: #005c48;
-  background: #fff;
-}
-
-.hunt-season__calendar-cell.is-mist i,
-.hunt-season__swatch.is-mist {
-  background: #9fb8a5;
-}
-
-.hunt-season__calendar-cell.is-forest i,
-.hunt-season__swatch.is-forest {
-  background: #005c48;
-}
-
-.hunt-season__calendar-cell.is-selected-month,
-.hunt-season__calendar-head.is-selected-month {
-  background: #e9eee5;
-}
-
-.hunt-season__detail-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 28px 40px 16px;
-}
-
-.hunt-season__detail-head > span {
-  color: rgba(255, 255, 255, .72);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
+  color: var(--ink, #063528);
 }
 
 .hunt-season p.hunt-season__result {
   min-height: 22px;
   margin: 0;
+  padding: 24px 40px 12px;
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
 }
 
 .hunt-season__list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 32px;
-  row-gap: 0;
   margin: 0;
   padding: 0 40px 32px;
   list-style: none;
 }
 
 .hunt-season__item {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(130px, .45fr) minmax(220px, 1fr);
-  gap: 22px;
-  align-content: start;
-  border-top: 1px solid rgba(255, 255, 255, .28);
-  padding: 24px 0 30px;
+  grid-template-columns: minmax(150px, .48fr) minmax(280px, 1.3fr) minmax(150px, .5fr);
+  gap: 28px;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, .24);
+  padding: 24px 0 24px 20px;
 }
+
+.hunt-season__item::before {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 0;
+  width: 4px;
+  background: #d7e08d;
+  content: "";
+}
+
+.hunt-season__item.is-light::before { background: #fff; }
+.hunt-season__item.is-mist::before { background: #9fb8a5; }
+.hunt-season__item.is-green::before { background: #4f907c; }
 
 .hunt-season__item[hidden] {
   display: none;
@@ -265,31 +137,12 @@
   font-weight: 600;
 }
 
-.hunt-season__date {
-  position: relative;
-  padding-left: 18px;
-}
-
-.hunt-season__date::before {
-  position: absolute;
-  top: 7px;
-  left: 0;
-  width: 7px;
-  height: 7px;
-  background: #d7e08d;
-  content: "";
-}
-
-.hunt-season__item.is-light .hunt-season__date::before { background: #fff; }
-.hunt-season__item.is-mist .hunt-season__date::before { background: #9fb8a5; }
-.hunt-season__item.is-forest .hunt-season__date::before { background: #005c48; }
-
 .hunt-season__date > span,
 .hunt-season__copy > span {
   display: block;
   margin-top: 6px;
-  color: rgba(255, 255, 255, .82);
-  font-size: 14px;
+  color: rgba(255, 255, 255, .76);
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -298,13 +151,28 @@
 }
 
 .hunt-season__status {
-  grid-column: 2;
-  justify-self: start;
-  padding-top: 2px;
+  justify-self: end;
+  border: 1px solid #d7e08d;
+  padding: 7px 10px;
   color: #d7e08d;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  text-align: left;
+  text-align: right;
+}
+
+.hunt-season__item.is-light .hunt-season__status {
+  border-color: #fff;
+  color: #fff;
+}
+
+.hunt-season__item.is-mist .hunt-season__status {
+  border-color: #9fb8a5;
+  color: #c5e4d6;
+}
+
+.hunt-season__item.is-green .hunt-season__status {
+  border-color: #4f907c;
+  color: #9fd0bf;
 }
 
 .hunt-season__item a {
@@ -313,19 +181,17 @@
   min-height: 48px;
   margin-top: 10px;
   color: var(--moss, #d7e08d);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
 .hunt-season__empty {
-  grid-column: 1 / -1;
-  border: 1px solid rgba(255, 255, 255, .26);
-  background: rgba(255, 255, 255, .055);
-  padding: 28px;
+  border-top: 1px solid rgba(255, 255, 255, .24);
+  padding: 28px 0 12px;
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .hunt-season__empty strong,
@@ -335,16 +201,16 @@
 
 .hunt-season__empty span {
   margin-top: 6px;
-  color: rgba(255, 255, 255, .78);
-  font-size: 14px;
+  color: rgba(255, 255, 255, .76);
+  font-size: 13px;
 }
 
 .hunt-season p.hunt-season__note {
   margin: 0;
-  border-top: 1px solid rgba(255, 255, 255, .18);
+  border-top: 1px solid rgba(255, 255, 255, .2);
   padding: 18px 40px 22px;
   color: rgba(255, 255, 255, .74);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -354,8 +220,14 @@
     gap: 22px;
   }
 
-  .hunt-season__list {
-    grid-template-columns: 1fr;
+  .hunt-season__item {
+    grid-template-columns: 150px 1fr;
+  }
+
+  .hunt-season__status {
+    grid-column: 2;
+    justify-self: start;
+    text-align: left;
   }
 }
 
@@ -372,18 +244,16 @@
     font-size: 34px;
   }
 
-  .hunt-season__intro-text {
+  .hunt-season p.hunt-season__intro-text {
     font-size: 16px;
   }
 
-  .hunt-season__calendar-grid {
-    grid-template-columns: 150px repeat(12, 70px);
-    min-width: 990px;
+  .hunt-season__months {
+    grid-template-columns: 104px repeat(12, 64px);
   }
 
-  .hunt-season__detail-head {
-    align-items: flex-start;
-    padding: 24px 24px 14px;
+  .hunt-season p.hunt-season__result {
+    padding: 20px 24px 8px;
   }
 
   .hunt-season__list {
@@ -393,22 +263,26 @@
   .hunt-season__item {
     grid-template-columns: 1fr;
     gap: 14px;
-    min-height: 0;
-    padding: 22px 0 26px;
+    padding: 22px 0 22px 18px;
+  }
+
+  .hunt-season__item::before {
+    top: 22px;
+    bottom: 22px;
   }
 
   .hunt-season__status {
     grid-column: 1;
-    padding-left: 18px;
+    justify-self: start;
   }
 
-  .hunt-season__note {
+  .hunt-season p.hunt-season__note {
     padding: 18px 24px 22px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hunt-season__calendar {
+  .hunt-season__months {
     scroll-behavior: auto;
   }
 }
